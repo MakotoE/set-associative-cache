@@ -1,26 +1,26 @@
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class Cache {
+public class Cache<T> {
 	Cache() {
-		this.sets = new LRU[4];
-		for (int i = 0; i < this.sets.length; i++) {
-			this.sets[i] = new LRU();
-		}
+		this.sets = Stream.generate(LRU<T>::new).limit(4).collect(Collectors.toList());
 	}
 
-	public void add(int key, int item) {
+	public void add(int key, T item) {
 		var hash = Integer.hashCode(key);
-		sets[get_set_id(hash)].add(hash, item);
+		sets.get(get_set_id(hash)).add(hash, item);
 	}
 
-	public Optional<Integer> get(int key) {
+	public Optional<T> get(int key) {
 		var hash = Integer.hashCode(key);
-		return sets[get_set_id(hash)].get(hash);
+		return sets.get(get_set_id(hash)).get(hash);
 	}
 
 	private static int get_set_id(int hash) {
 		return hash & 0b11;
 	}
 
-	private final LRU[] sets;
+	private final List<LRU<T>> sets;
 }

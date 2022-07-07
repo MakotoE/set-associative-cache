@@ -1,17 +1,17 @@
 import java.util.Optional;
 import java.util.Vector;
 
-public class LRU {
+public class LRU<T> {
 	LRU() {
 		this.entries = new Vector<>(2);
 	}
 
-	public void add(int key, int item) {
-		// Check if key is present
+	public void add(int key, T item) {
+		// Replace if key is present
 		for (int i = 0; i < entries.size(); i++) {
 			if (entries.get(i).key == key) {
 				entries.remove(i);
-				entries.add(new Entry(key, item));
+				entries.add(new Entry<>(key, item));
 				return;
 			}
 		}
@@ -21,10 +21,10 @@ public class LRU {
 			entries.remove(0);
 		}
 
-		entries.add(new Entry(key, item));
+		entries.add(new Entry<>(key, item));
 	}
 
-	public Optional<Integer> get(int key) {
+	public Optional<T> get(int key) {
 		for (int i = 0; i < entries.size(); i++) {
 			if (entries.get(i).key == key) {
 				var entry = entries.remove(i);
@@ -36,18 +36,18 @@ public class LRU {
 		return Optional.empty();
 	}
 
-	static class Entry {
-		Entry(int key, int item) {
+	static class Entry<T> {
+		Entry(int key, T item) {
 			this.key = key;
 			this.item = item;
 		}
 
 		int key;
-		int item;
+		T item;
 	}
 
 	private static final int CAPACITY = 2;
 
 	// First entry is least recently used
-	private final Vector<Entry> entries;
+	private final Vector<Entry<T>> entries;
 }

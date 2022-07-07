@@ -7,6 +7,16 @@ public class LRU {
 	}
 
 	public void add(int key, int item) {
+		// Check if key is present
+		for (int i = 0; i < entries.size(); i++) {
+			if (entries.get(i).key == key) {
+				entries.remove(i);
+				entries.add(new Entry(key, item));
+				return;
+			}
+		}
+
+		// Replace entry if full
 		if (entries.size() == CAPACITY) {
 			entries.remove(0);
 		}

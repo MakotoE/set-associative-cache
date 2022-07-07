@@ -1,8 +1,11 @@
 import java.util.Optional;
 
-public class SetAssociative {
-	SetAssociative() {
+public class Cache {
+	Cache() {
 		this.sets = new LRU[4];
+		for (int i = 0; i < this.sets.length; i++) {
+			this.sets[i] = new LRU();
+		}
 	}
 
 	public void add(int key, int item) {

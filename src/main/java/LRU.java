@@ -11,8 +11,7 @@ public class LRU<T> {
 			// Replace if key is present
 			for (int i = 0; i < entries.size(); i++) {
 				if (entries.get(i).key == key) {
-					entries.remove(i);
-					entries.add(new Entry<>(key, item));
+					entries.set(i, new Entry<>(key, item));
 					return;
 				}
 			}

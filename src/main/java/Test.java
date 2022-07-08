@@ -27,7 +27,7 @@ public class Test {
 			assert(cache.get(2).get() == 2);
 		}
 		{
-			var cache = new Cache<Integer>();
+			var cache = new Cache<Integer, Integer>();
 			assert(cache.get(0).isEmpty());
 			cache.add(0, 0);
 			assert(cache.get(0).get() == 0);

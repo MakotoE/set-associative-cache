@@ -7,33 +7,37 @@ public class LRU<T> {
 	}
 
 	public void add(int key, T item) {
-		// Replace if key is present
-		for (int i = 0; i < entries.size(); i++) {
-			if (entries.get(i).key == key) {
-				entries.remove(i);
-				entries.add(new Entry<>(key, item));
-				return;
+		synchronized (entries) {
+			// Replace if key is present
+			for (int i = 0; i < entries.size(); i++) {
+				if (entries.get(i).key == key) {
+					entries.remove(i);
+					entries.add(new Entry<>(key, item));
+					return;
+				}
 			}
-		}
 
-		// Replace entry if full
-		if (entries.size() == CAPACITY) {
-			entries.remove(0);
-		}
+			// Replace entry if full
+			if (entries.size() == CAPACITY) {
+				entries.remove(0);
+			}
 
-		entries.add(new Entry<>(key, item));
+			entries.add(new Entry<>(key, item));
+		}
 	}
 
 	public Optional<T> get(int key) {
-		for (int i = 0; i < entries.size(); i++) {
-			if (entries.get(i).key == key) {
-				var entry = entries.remove(i);
-				entries.add(entry);
-				return Optional.of(entry.item);
+		synchronized (entries) {
+			for (int i = 0; i < entries.size(); i++) {
+				if (entries.get(i).key == key) {
+					var entry = entries.remove(i);
+					entries.add(entry);
+					return Optional.of(entry.item);
+				}
 			}
-		}
 
-		return Optional.empty();
+			return Optional.empty();
+		}
 	}
 
 	static class Entry<T> {

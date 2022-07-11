@@ -22,5 +22,5 @@ public class Cache<K, T> {
 		return hash & 0b11;
 	}
 
-	private final List<LRU<T>> sets;
+	private final List<ReplacementAlgorithm<T>> sets;
 }

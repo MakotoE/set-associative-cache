@@ -1,7 +1,7 @@
 import java.util.Optional;
 import java.util.Vector;
 
-public class LRU<T> {
+public class LRU<T> implements ReplacementAlgorithm<T> {
 	LRU() {
 		this.entries = new Vector<>(2);
 	}
